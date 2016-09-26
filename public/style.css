@@ -1,0 +1,9 @@
+.contact {
+  width: 500px;
+  margin: 100px auto;
+}
+
+.contact input {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
