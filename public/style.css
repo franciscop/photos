@@ -1,9 +1,23 @@
-.contact {
-  width: 500px;
-  margin: 100px auto;
+body {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
 }
 
-.contact input {
-  margin-top: 0;
-  margin-bottom: 10px;
+img {
+  width: 100%;
+}
+
+form {
+  width: 500px;
+  margin: 50px auto;
+}
+
+form input {
+  margin: 5px 0;
+}
+
+.dropimage {
+  padding-bottom: 100%;
 }

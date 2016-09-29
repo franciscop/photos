@@ -1,0 +1,24 @@
+extends layout
+
+block content
+
+  h1= name
+
+  div.flex.one.two-500.five-900
+    each photo in photos
+      div.photo
+        h2= photo.title
+        img(src=photo.url)
+        button.like Like
+
+  form(action="/photos" method="POST" enctype="multipart/form-data")
+    div.flex.two
+      div
+        label.dropimage
+          input(type="file" name="image" title="Drop image or click me")
+      div
+        label Title:
+          input(name="title" placeholder="Title")
+        label Nickname:
+          input(name="nick" placeholder="Nickname")
+        input(type="submit" value="Upload")
