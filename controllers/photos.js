@@ -11,6 +11,13 @@ cloudinary.config({
 
 module.exports.index = function(req, res){
   models.photos.find({}, function(err, images){
+    images = images.map(image => ({
+      id: image.id,
+      url: image.url,
+      title: image.title,
+      liked: image.likes.indexOf(req.cookies.token) >= 0
+    }));
+    console.log(images);
     res.render('index', { photos: images });
   });
 }

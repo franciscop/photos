@@ -9,7 +9,7 @@ block content
       div.photo
         h2= photo.title
         img(src=photo.url)
-        button.like(id=photo.id) Like
+        button.like(id=photo.id class=(photo.liked ? 'liked' : ''))= (photo.liked ? 'Unlike' : 'Like')
 
   form(action="/photos" method="POST" enctype="multipart/form-data")
     div.flex.two

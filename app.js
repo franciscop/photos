@@ -5,13 +5,15 @@ require('dotenv').config();
 var express = require('express');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
+var cookieParser = require('cookie-parser')
 var routes = require('./routes');
 
 // Server configuration
 var app = express();
 app.set('view engine', 'pug');  // The "html engine"
 app.use(express.static('public'));  // Where the static files are
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
 
 // Connect to the database before accepting any request
 mongoose.connect('mongodb://localhost/test');
