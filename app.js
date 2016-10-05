@@ -4,12 +4,14 @@ require('dotenv').config();
 // Import the modules that we will use in this file
 var express = require('express');
 var mongoose = require('mongoose');
+var bodyParser = require('body-parser');
 var routes = require('./routes');
 
 // Server configuration
 var app = express();
 app.set('view engine', 'pug');  // The "html engine"
 app.use(express.static('public'));  // Where the static files are
+app.use(bodyParser.urlencoded({ extended: false }))
 
 // Connect to the database before accepting any request
 mongoose.connect('mongodb://localhost/test');
