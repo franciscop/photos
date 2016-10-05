@@ -25,6 +25,7 @@ module.exports.upload = function(req, res, next){
 
   function parseForm(err, fields, files) {
     if (err) next(err);
+
     cloudinary.uploader.upload(files.image.path, function (result) {
       // Let's force https in the image:
       var url = result.url.replace('http://', 'https://');
