@@ -20,7 +20,7 @@ app.use(express.static('public'));  // Where the static files are
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser('foo'));
 app.use(session({
-  store: new redis({}),
+  store: new redis(process.env.REDIS_URL ? { url: process.env.REDIS_URL } : {}),
   secret: 'dfbdfilsjpergnsjkdafnweofnwevre',
   resave: true,
   saveUninitialized: false
@@ -38,7 +38,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(function(req, res, next){
-  if (req.query.returnTo) req.session.returnTo = req.query.returnTo;
+  if (req.session && req.query.returnTo) req.session.returnTo = req.query.returnTo;
   res.locals.user = req.user;
   next();
 });
