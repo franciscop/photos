@@ -1,0 +1,12 @@
+extends layout
+
+block title
+  title= user.name
+
+block content
+  div.flex.three
+    div
+      img(src=user.image)
+    div.two-third
+      h1= user.name
+      a.button.error(href='/logout') Logout

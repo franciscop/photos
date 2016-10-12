@@ -2,23 +2,48 @@ extends layout
 
 block content
 
-  h1= name
+  div.error
+
+  h1 Paradise Filter Images
 
   div.flex.one.two-500.five-900
     each photo in photos
-      div.photo
-        h2= photo.title
-        img(src=photo.url)
-        button.like(id=photo.id class=(photo.liked ? 'liked' : ''))= (photo.liked ? 'Unlike' : 'Like')
+      div.frame
+        div.photo(id=photo.id)
+          a(href="/photo/" + photo.id target="_blank")
+            img(src=photo.url)
+          if user && user.id === photo.user
+            i.fa.fa-trash.delete
+          if photo.liked
+            i.fa.fa-heart.like
+          else
+            i.fa.fa-heart-o.like
+        div.flex.three.info
+          h2.two-third.title= photo.title
+          span.hearts
+            span.count= photo.likes.length
+            = ' '
+            i.fa.fa-heart
 
-  form(action="/photos" method="POST" enctype="multipart/form-data")
-    div.flex.two
-      div
-        label.dropimage
-          input(type="file" name="image" title="Drop image or click me")
-      div
-        label Title:
-          input(name="title" placeholder="Title")
-        label Nickname:
-          input(name="nick" placeholder="Nickname")
-        input(type="submit" value="Upload")
+  if user
+    form.add(action="/photos" method="POST" enctype="multipart/form-data")
+      label.dropimage
+        input(type="file" name="image" title="Drop image or click me" required)
+      div.flex.three
+        label.two-third
+          input(name="title" placeholder="Title" required)
+        label
+          input.full(type="submit" value="Upload")
+  else
+    button.upload Upload picture
+
+
+  .modal
+    input#clearbox(type='checkbox')
+    label.overlay(for='clearbox')
+    article
+      header
+        h3
+        label.close(for='clearbox') ×
+      section.content
+        img

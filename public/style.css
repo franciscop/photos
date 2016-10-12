@@ -2,7 +2,15 @@ body {
   width: 100%;
   max-width: 1000px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 0 20px;
+}
+
+main {
+  padding-top: 100px;
+}
+
+h1 {
+  padding: 0 0 .6em;
 }
 
 img {
@@ -10,7 +18,7 @@ img {
 }
 
 form {
-  width: 500px;
+  width: 300px;
   margin: 50px auto;
 }
 
@@ -20,4 +28,72 @@ form input {
 
 .dropimage {
   padding-bottom: 100%;
+}
+
+.photo {
+  position: relative;
+  cursor: pointer;
+  height: 0;
+  padding-bottom: 100%;
+  transition: all .3s ease;
+  overflow: hidden;
+}
+
+.frame {
+  transition: all .3s ease;
+}
+
+.frame.remove {
+  transform: scale(0.4);
+  opacity: 0;
+  width: 0;
+}
+
+.photo .fa {
+  font-size: 2em;
+  position: absolute;
+  top: 10px;
+  opacity: 0.7;
+  transition: all .3s ease;
+  color: #fff;
+  text-shadow: 0 0 10px #000, 0 0 3px #000;
+}
+
+.photo .fa-heart, .photo .fa-heart-o {
+  right: 10px;
+}
+
+.photo .fa-trash {
+  top: 13px;
+  left: 13px;
+  font-size: 1.4em;
+}
+
+.photo .fa:hover {
+  opacity: 1;
+}
+
+.fa-heart, .photo .fa-heart {
+  color: #f00;
+}
+
+.title {
+  font-size: 1em;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin: 0;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.hearts {
+  text-align: right;
+}
+
+.modal .overlay ~ * section {
+  padding: 0;
+}
+.modal img {
+  display: block;
 }

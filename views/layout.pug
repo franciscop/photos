@@ -1,13 +1,48 @@
 doctype html
 html
   head
-    title= title
+    block title
+      title Paradise Filter
     link(rel="stylesheet" href="https://cdn.jsdelivr.net/picnicss/6.0.0/plugins.min.css")
+    link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css")
     link(rel='stylesheet', href='style.css')
     block head
   body
-    block content
+    nav
+      .brand
+        a(href="/") Paradise Filter
+      .menu
+        if user
+          a.button(href="/user")= user.name
+        else
+          a.button.login Login
 
-    script(src="https://unpkg.com/cookiesjs@1")
+    main
+      block content
+
     script(src="https://code.jquery.com/jquery-3.1.1.min.js")
+    script(src="https://cdn.auth0.com/js/lock/10.3/lock.min.js")
+    script.
+      // Construct an instance of Auth0Lock with your clientId and aut0 domain name
+      var lock = new Auth0Lock('#{env.AUTH0_CLIENT_ID}', '#{env.AUTH0_DOMAIN}',{ auth: {
+          redirectUrl: '#{env.AUTH0_CALLBACK_URL}?returnTo=' + window.location.pathname
+        , responseType: 'code'
+        , params: {
+          scope: 'openid name email picture'
+        }
+      }});
+
+      // Show lock's login widget
+      $('.login').click(function(){
+        lock.show();
+      });
+
+      // http://stackoverflow.com/a/18305085/938236
+      if (window.location.hash == '#_=_'){
+        history.replaceState
+          ? history.replaceState(null, null, window.location.href.split('#')[0])
+          : window.location.hash = '';
+      }
+
+      var user = JSON.parse('!{JSON.stringify(user || false)}');
     script(src="javascript.js")

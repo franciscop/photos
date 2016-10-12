@@ -11,40 +11,48 @@ cloudinary.config({
 
 module.exports.index = function(req, res){
   models.photos.find({}, function(err, images){
-    images = images.map(image => ({
-      id: image.id,
-      url: image.url,
-      title: image.title,
-      liked: image.likes.indexOf(req.cookies.token) >= 0
+    images = images.map(image => Object.assign(image, {
+      liked: image.likes.includes(req.user ? req.user.id : '')
     }));
-    console.log(images);
     res.render('index', { photos: images });
   });
 }
 
 module.exports.upload = function(req, res, next){
-  var form = new formidable.IncomingForm();
+  if (!req.user || !req.user.id) {
+    return res.status(401).json({ error: "You should login to upload pictures" });
+  }
 
   function redirect(err){
-    if (err) next(err);
-    res.redirect('/');
+    if (err) return next(err);
+    return res.redirect('/');
   }
 
-  function parseForm(err, fields, files) {
-    if (err) next(err);
+  cloudinary.uploader.upload(req.files.image.path, function (result) {
+    // Let's force https in the image:
+    var url = result.url.replace('http://', 'https://');
 
-    cloudinary.uploader.upload(files.image.path, function (result) {
-      // Let's force https in the image:
-      var url = result.url.replace('http://', 'https://');
-
-      var Photo = new models.photos({
-        url: url,
-        title: fields.title,
-        nickname: fields.nick,
-      });
-      Photo.save(redirect);
+    var Photo = new models.photos({
+      url: url,
+      title: req.body.title,
+      user: req.user.id,
     });
-  }
+    Photo.save(redirect);
+  });
+}
 
-  form.parse(req, parseForm);
+module.exports.remove = function(req, res){
+  if (!req.user) {
+    return res.status(401).json({ error: "You should be a user to do that" });
+  }
+  var query = {
+    _id: req.params.id,
+    user: req.user.id
+  };
+  models.photos.findOneAndRemove(query, function(err, image){
+    if (!image) {
+      return res.status(404).json({ error: 'That image is not in your uploads (anymore?)' });
+    }
+    res.json({});
+  });
 }
