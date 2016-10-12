@@ -44,7 +44,7 @@ app.use(function(req, res, next){
 });
 
 // Connect to the database before accepting any request
-mongoose.connect('mongodb://localhost/test');
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/test');
 var db = mongoose.connection;
 db.once('open', function(){
 
